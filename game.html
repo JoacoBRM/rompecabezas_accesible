@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego - Rompecabezas Accesible</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+
+    <!-- Selección de Categoría -->
+    <section id="category-selection" class="category-section">
+        <header class="category-header">
+            <h1>Rompecabezas Inclusivo</h1>
+            <p>Selecciona una categoría para comenzar:</p>
+        </header>
+
+        <div class="category-grid" role="group" aria-label="Selección de categoría">
+            <div class="category-card" tabindex="0" role="button" onclick="selectCategory('animales')"
+                onkeydown="if(event.key==='Enter' || event.key===' '){event.preventDefault(); selectCategory('animales');}"
+                aria-label="Categoría Animales: León majestuoso">
+                <div class="category-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1546182990-dffeafbe841d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+                </div>
+                <h2>🦁 Animales</h2>
+                <p>León majestuoso</p>
+            </div>
+
+            <div class="category-card" tabindex="0" role="button" onclick="selectCategory('paisajes')"
+                onkeydown="if(event.key==='Enter' || event.key===' '){event.preventDefault(); selectCategory('paisajes');}"
+                aria-label="Categoría Paisajes: Montañas nevadas">
+                <div class="category-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+                </div>
+                <h2>🏔️ Paisajes</h2>
+                <p>Montañas nevadas</p>
+            </div>
+
+            <div class="category-card" tabindex="0" role="button" onclick="selectCategory('comida')"
+                onkeydown="if(event.key==='Enter' || event.key===' '){event.preventDefault(); selectCategory('comida');}"
+                aria-label="Categoría Comida: Frutas frescas">
+                <div class="category-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1619566636858-adf3ef46400b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+                </div>
+                <h2>🍓 Comida</h2>
+                <p>Frutas frescas</p>
+            </div>
+
+            <div class="category-card" tabindex="0" role="button" onclick="selectCategory('arte')"
+                onkeydown="if(event.key==='Enter' || event.key===' '){event.preventDefault(); selectCategory('arte');}"
+                aria-label="Categoría Arte: Arte abstracto colorido">
+                <div class="category-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+                </div>
+                <h2>🎨 Arte</h2>
+                <p>Arte abstracto colorido</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <a href="index.html" style="text-decoration: none;">
+                <button>🏠 Volver al Inicio</button>
+            </a>
+        </div>
+    </section>
+
+    <!-- Sección del Juego -->
+    <div id="game-section" style="display: none;">
+        <header>
+            <h1>Rompecabezas Inclusivo</h1>
+            <div class="instructions">
+                <p><strong>Objetivo:</strong> Reorganiza la imagen.</p>
+                <p><strong>Cómo jugar (Accesible):</strong>
+                    1. Haz clic (o pulsa Enter) en una pieza para seleccionarla.
+                    2. Haz clic en otra pieza para intercambiarlas de lugar.
+                    No es necesario arrastrar.
+                </p>
+            </div>
+        </header>
+
+        <nav class="controls" aria-label="Controles del juego">
+            <button onclick="startGame()">Reiniciar Juego</button>
+
+            <!-- Selector de Dificultad (Separado de Accesibilidad) -->
+            <div class="difficulty-control">
+                <select id="grid-size" onchange="changeGridSize(this.value)" aria-label="Seleccionar dificultad">
+                    <option value="3" selected>Dificultad: Fácil (3x3)</option>
+                    <option value="4">Dificultad: Media (4x4)</option>
+                    <option value="5">Dificultad: Difícil (5x5)</option>
+                </select>
+            </div>
+
+            <div class="accessibility-menu-container">
+                <button id="acc-menu-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()">
+                    Accesibilidad ♿
+                </button>
+                <div id="acc-menu-panel" class="accessibility-panel hidden" role="menu" aria-labelledby="acc-menu-btn">
+
+                    <div class="menu-item">
+                        <label for="contrast-toggle">Alto Contraste</label>
+                        <button id="contrast-toggle" onclick="toggleContrast()"
+                            aria-pressed="false">Desactivado</button>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="showCategorySelection()">Cambiar Categoría</button>
+
+            <a href="index.html" style="text-decoration: none;">
+                <button>Volver al Inicio</button>
+            </a>
+        </nav>
+
+        <!-- Región ARIA Live para anunciar cambios a lectores de pantalla -->
+        <div id="announcer" class="sr-only" aria-live="polite" style="position:absolute; left:-9999px;"></div>
+
+        <div class="status-bar">
+            <span id="timer-display">Tiempo: 00:00</span>
+            <span id="moves-display">Movimientos: 0</span>
+        </div>
+
+        <!-- Tablero del juego -->
+        <main class="game-board" id="board" role="grid" aria-label="Tablero de rompecabezas de 3 por 3">
+            <!-- Las piezas se generarán aquí con JS -->
+        </main>
+
+        <div id="win-message" role="alert">
+            <h2>¡Felicidades!</h2>
+            <p>Has completado el rompecabezas.</p>
+        </div>
+    </div>
+
+
+    <script src="js/game.js"></script>
+</body>
+
+</html>
