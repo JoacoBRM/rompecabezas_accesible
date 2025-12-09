@@ -74,8 +74,10 @@
             <div class="instructions">
                 <p><strong>Objetivo:</strong> Reorganiza la imagen.</p>
                 <p><strong>Cómo jugar (Accesible):</strong>
-                    1. Haz clic (o pulsa Enter) en una pieza para seleccionarla.
-                    2. Haz clic en otra pieza para intercambiarlas de lugar.
+                    1. Haz clic (o pulsa Enter) en una pieza para seleccionarla.<br>
+                    2. Haz clic en otra pieza para intercambiarlas de lugar.<br>
+                    3. Navega entre piezas con <strong>Tab</strong>, <strong>W/A/S/D</strong> o las <strong>flechas del
+                        teclado</strong>.<br>
                     No es necesario arrastrar.
                 </p>
             </div>
@@ -102,6 +104,12 @@
                     <div class="menu-item">
                         <label for="contrast-toggle">Alto Contraste</label>
                         <button id="contrast-toggle" onclick="toggleContrast()"
+                            aria-pressed="false">Desactivado</button>
+                    </div>
+
+                    <div class="menu-item">
+                        <label for="animation-toggle">Reducir Animaciones</label>
+                        <button id="animation-toggle" onclick="toggleMinimalistMode()"
                             aria-pressed="false">Desactivado</button>
                     </div>
                 </div>
