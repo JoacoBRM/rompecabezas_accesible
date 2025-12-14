@@ -45,31 +45,29 @@ const accMenuBtn = document.getElementById('acc-menu-btn');
 // Inicializar juego al cargar
 window.onload = function () {
     // Restaurar preferencias accesibilidad
-    const savedMinimalist = localStorage.getItem('minimalistMode') === 'true';
-    if (savedMinimalist) {
-        document.body.classList.add('minimalist-mode');
-        updateMinimalistButton(true);
+    const savedColorBlindness = localStorage.getItem('colorBlindnessMode') || 'normal';
+    if (savedColorBlindness !== 'normal') {
+        changeColorBlindnessMode(savedColorBlindness);
+        // Sync selector
+        const cbSelect = document.getElementById('color-blindness-select');
+        if (cbSelect) cbSelect.value = savedColorBlindness;
     }
 
     showCategorySelection();
 };
 
-function toggleMinimalistMode() {
-    document.body.classList.toggle('minimalist-mode');
-    const isMinimalist = document.body.classList.contains('minimalist-mode');
+function changeColorBlindnessMode(mode) {
+    // Remove existing filter classes
+    document.body.classList.remove('cb-protanopia', 'cb-deuteranopia', 'cb-tritanopia', 'cb-achromatopsia');
 
-    updateMinimalistButton(isMinimalist);
-    localStorage.setItem('minimalistMode', isMinimalist);
-
-    announce(isMinimalist ? "Modo minimalista activado (animaciones reducidas)" : "Modo minimalista desactivado");
-}
-
-function updateMinimalistButton(isActive) {
-    const btn = document.getElementById('animation-toggle');
-    if (btn) {
-        btn.innerText = isActive ? "Activado" : "Desactivado";
-        btn.setAttribute('aria-pressed', isActive.toString());
+    if (mode !== 'normal') {
+        document.body.classList.add(`cb-${mode}`);
+        announce(`Modo de daltonismo activado: ${mode}`);
+    } else {
+        announce("Modo de daltonismo desactivado");
     }
+
+    localStorage.setItem('colorBlindnessMode', mode);
 }
 
 // --- Lógica de Selección de Categoría ---
