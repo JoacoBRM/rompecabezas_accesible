@@ -44,8 +44,31 @@ const accMenuBtn = document.getElementById('acc-menu-btn');
 
 // Inicializar juego al cargar
 window.onload = function () {
+    // Restaurar preferencias accesibilidad
+    const savedColorBlindness = localStorage.getItem('colorBlindnessMode') || 'normal';
+    if (savedColorBlindness !== 'normal') {
+        changeColorBlindnessMode(savedColorBlindness);
+        // Sync selector
+        const cbSelect = document.getElementById('color-blindness-select');
+        if (cbSelect) cbSelect.value = savedColorBlindness;
+    }
+
     showCategorySelection();
 };
+
+function changeColorBlindnessMode(mode) {
+    // Remove existing filter classes
+    document.body.classList.remove('cb-protanopia', 'cb-deuteranopia', 'cb-tritanopia', 'cb-achromatopsia');
+
+    if (mode !== 'normal') {
+        document.body.classList.add(`cb-${mode}`);
+        announce(`Modo de daltonismo activado: ${mode}`);
+    } else {
+        announce("Modo de daltonismo desactivado");
+    }
+
+    localStorage.setItem('colorBlindnessMode', mode);
+}
 
 // --- Lógica de Selección de Categoría ---
 function showCategorySelection() {
@@ -88,10 +111,60 @@ function closeMenu() {
     accMenuBtn.focus(); // Devolver foco al botón
 }
 
+// Variable para rastrear la pieza actualmente enfocada
+let currentFocusedIndex = 0;
+
 // Cerrar menú al presionar Escape
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !accMenuPanel.classList.contains('hidden')) {
         closeMenu();
+        return;
+    }
+
+    // Navegación con WASD y flechas del teclado
+    const gameSection = document.getElementById('game-section');
+    if (gameSection.style.display === 'none') return; // Solo funciona cuando el juego está activo
+
+    let newIndex = currentFocusedIndex;
+    let moved = false;
+
+    // Detectar teclas de dirección
+    if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+        e.preventDefault();
+        newIndex = currentFocusedIndex - gridSize;
+        moved = true;
+    } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+        e.preventDefault();
+        newIndex = currentFocusedIndex + gridSize;
+        moved = true;
+    } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        e.preventDefault();
+        newIndex = currentFocusedIndex - 1;
+        moved = true;
+    } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        e.preventDefault();
+        newIndex = currentFocusedIndex + 1;
+        moved = true;
+    }
+
+    // Validar que el nuevo índice esté dentro del rango
+    if (moved && newIndex >= 0 && newIndex < totalPieces) {
+        // Validar movimiento horizontal (no saltar de fila)
+        if ((e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') &&
+            Math.floor(currentFocusedIndex / gridSize) !== Math.floor(newIndex / gridSize)) {
+            return; // No permitir salto de fila hacia la izquierda
+        }
+        if ((e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') &&
+            Math.floor(currentFocusedIndex / gridSize) !== Math.floor(newIndex / gridSize)) {
+            return; // No permitir salto de fila hacia la derecha
+        }
+
+        currentFocusedIndex = newIndex;
+        const targetPiece = document.querySelector(`[data-current="${newIndex}"]`);
+        if (targetPiece) {
+            targetPiece.focus();
+            announce(`Navegando a pieza en posición ${newIndex + 1}`);
+        }
     }
 });
 
@@ -186,6 +259,11 @@ function createPiece(originalIndex, currentIndex) {
             e.preventDefault();
             handleInteraction(currentIndex);
         }
+    });
+
+    // Actualizar índice de foco cuando se enfoca una pieza
+    piece.addEventListener('focus', () => {
+        currentFocusedIndex = currentIndex;
     });
 
     boardElement.appendChild(piece);

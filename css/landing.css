@@ -1,149 +1,344 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
 @import url('style.css');
-/* Importar variables y base */
 
-/* Reset básico para asegurar consistencia */
+/* Reset y configuración base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    color: #fff;
     line-height: 1.6;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Animated gradient background */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Decorative floating elements */
+body::before,
+body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    z-index: 0;
+    animation: float 20s ease-in-out infinite;
+}
+
+body::before {
+    width: 500px;
+    height: 500px;
+    background: rgba(255, 255, 255, 0.3);
+    top: -250px;
+    left: -250px;
+}
+
+body::after {
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 107, 107, 0.3);
+    bottom: -200px;
+    right: -200px;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    33% {
+        transform: translate(30px, -30px) rotate(120deg);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) rotate(240deg);
+    }
 }
 
 .landing-container {
     text-align: center;
-    max-width: 900px;
-    margin: 60px auto;
-    padding: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 20px;
     animation: fadeIn 1s ease-out;
+    position: relative;
+    z-index: 1;
 }
 
-/* Ensure header is centered if it has a max-width from base styles */
 .landing-container header {
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto 30px auto;
+    max-width: 900px;
+    margin: 0 auto 50px auto;
 }
 
+/* Hero Title with gradient text */
 .hero-title {
-    font-size: 3.5rem;
-    color: var(--primary-color);
-    margin-bottom: 1rem;
+    font-size: 4.5rem;
+    background: linear-gradient(135deg, #fff 0%, #f0f0f0 50%, #fff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
     font-weight: 800;
-    letter-spacing: -1px;
-    animation: slideDown 0.8s ease-out;
+    letter-spacing: -2px;
+    animation: slideDown 0.8s ease-out, textGlow 3s ease-in-out infinite;
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+    line-height: 1.1;
+}
+
+@keyframes textGlow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 40px rgba(255, 255, 255, 0.6));
+    }
 }
 
 .hero-description {
-    font-size: 1.3rem;
-    max-width: 700px;
-    margin: 0 auto 3rem auto;
-    color: #555;
+    font-size: 1.4rem;
+    max-width: 750px;
+    margin: 0 auto 3.5rem auto;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 300;
+    line-height: 1.8;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Botón Principal con efecto "Wow" */
+/* Premium Play Button */
 .play-button {
     display: inline-block;
     text-decoration: none;
-    background: linear-gradient(135deg, var(--accent-color), #2980b9);
+    background: linear-gradient(135deg, #ff6b6b, #ee5a6f, #c44569);
     color: white;
-    padding: 20px 50px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    border-radius: 50px;
+    padding: 22px 60px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    border-radius: 60px;
     border: none;
-    box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    box-shadow: 0 15px 35px rgba(238, 90, 111, 0.4),
+        0 5px 15px rgba(0, 0, 0, 0.2),
+        inset 0 -3px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.play-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.play-button:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .play-button::after {
-    content: '';
+    content: '🎮';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.8rem;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s, right 0.3s;
 }
 
 .play-button:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 25px rgba(52, 152, 219, 0.4);
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 20px 50px rgba(238, 90, 111, 0.6),
+        0 10px 25px rgba(0, 0, 0, 0.3),
+        inset 0 -3px 10px rgba(0, 0, 0, 0.2),
+        0 0 30px rgba(255, 107, 107, 0.5);
+    padding-right: 70px;
 }
 
 .play-button:hover::after {
     opacity: 1;
+    right: 20px;
+}
+
+.play-button:active {
+    transform: translateY(-4px) scale(1.02);
 }
 
 .play-button:focus-visible {
-    outline: 4px solid var(--focus-color);
-    outline-offset: 4px;
+    outline: 4px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 6px;
 }
 
-/* Tarjetas de características */
+/* Feature Cards with Glassmorphism */
 .features {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 80px;
-    gap: 30px;
+    margin-top: 100px;
+    gap: 35px;
+    perspective: 1000px;
 }
 
 .feature-card {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 40px 30px;
+    border-radius: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
     flex: 1;
-    min-width: 250px;
-    max-width: 300px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    min-width: 260px;
+    max-width: 320px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.feature-card:hover::before {
+    left: 100%;
 }
 
 .feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    transform: translateY(-15px) rotateX(5deg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 0 30px rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.25);
 }
 
 .feature-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
+    font-size: 4rem;
+    margin-bottom: 25px;
     display: block;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+    animation: iconBounce 2s ease-in-out infinite;
+}
+
+@keyframes iconBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.feature-card:hover .feature-icon {
+    animation: iconSpin 0.6s ease-in-out;
+    transform: scale(1.2);
+}
+
+@keyframes iconSpin {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(180deg) scale(1.2);
+    }
+
+    100% {
+        transform: rotate(360deg) scale(1.2);
+    }
 }
 
 .feature-card h3 {
-    color: var(--primary-color);
-    margin-bottom: 10px;
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Footer limpio */
+.feature-card p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+/* Footer */
 footer {
-    margin-top: 80px;
-    color: #888;
-    font-size: 0.9rem;
+    margin-top: 100px;
+    padding: 30px 20px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    font-weight: 300;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Animaciones */
+/* Animations */
 @keyframes fadeIn {
     from {
         opacity: 0;
+        transform: scale(0.95);
     }
 
     to {
         opacity: 1;
+        transform: scale(1);
     }
 }
 
 @keyframes slideDown {
     from {
-        transform: translateY(-30px);
+        transform: translateY(-50px);
         opacity: 0;
     }
 
@@ -153,7 +348,42 @@ footer {
     }
 }
 
-/* Preferencias de Movimiento Reducido */
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 3rem;
+        letter-spacing: -1px;
+    }
+
+    .hero-description {
+        font-size: 1.1rem;
+    }
+
+    .play-button {
+        font-size: 1.3rem;
+        padding: 18px 45px;
+    }
+
+    .features {
+        margin-top: 60px;
+    }
+
+    .feature-card {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .landing-container {
+        padding: 40px 15px;
+    }
+}
+
+/* Reduced Motion Preferences */
 @media (prefers-reduced-motion: reduce) {
 
     *,
@@ -163,5 +393,9 @@ footer {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 }
