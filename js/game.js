@@ -22,12 +22,12 @@ const categories = {
     },
     comida: {
         name: 'Comida',
-        image: 'https://images.unsplash.com/photo-1619566636858-adf3ef46400b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         description: 'Frutas frescas'
     },
     arte: {
         name: 'Arte',
-        image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
+        image: 'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
         description: 'Arte abstracto colorido'
     }
 };
@@ -56,7 +56,7 @@ window.onload = function () {
     showCategorySelection();
 };
 
-// --- Lógica del Menú de Daltonismo ---
+// --- Menú de Daltonismo ---
 const cbMenuPanel = document.getElementById('cb-menu-panel');
 const cbMenuBtn = document.getElementById('cb-menu-btn');
 
@@ -78,7 +78,6 @@ function closeCBMenu() {
 }
 
 function changeColorBlindnessMode(mode) {
-    // Remove existing filter classes
     document.body.classList.remove('cb-protanopia', 'cb-deuteranopia', 'cb-tritanopia', 'cb-achromatopsia');
 
     if (mode !== 'normal') {
@@ -89,8 +88,6 @@ function changeColorBlindnessMode(mode) {
     }
 
     localStorage.setItem('colorBlindnessMode', mode);
-
-    // Update UI Custom Dropdown Text
     const btnText = document.getElementById('cb-selected-text');
     if (btnText) {
         const labels = {
@@ -106,7 +103,7 @@ function changeColorBlindnessMode(mode) {
     closeCBMenu();
 }
 
-// --- Lógica de Selección de Categoría ---
+// --- Selección de Categoría ---
 function showCategorySelection() {
     const categorySection = document.getElementById('category-selection');
     const gameSection = document.getElementById('game-section');
@@ -128,13 +125,12 @@ function selectCategory(categoryKey) {
     startGame();
 }
 
-// --- Lógica del Menú de Accesibilidad ---
+// --- Menú de Accesibilidad ---
 function toggleMenu() {
     const isHidden = accMenuPanel.classList.contains('hidden');
     if (isHidden) {
         accMenuPanel.classList.remove('hidden');
         accMenuBtn.setAttribute('aria-expanded', 'true');
-        // Poner foco en el primer elemento del menú
         document.getElementById('contrast-toggle').focus();
     } else {
         closeMenu();
@@ -144,27 +140,21 @@ function toggleMenu() {
 function closeMenu() {
     accMenuPanel.classList.add('hidden');
     accMenuBtn.setAttribute('aria-expanded', 'false');
-    accMenuBtn.focus(); // Devolver foco al botón
+    accMenuBtn.focus();
 }
 
-// Variable para rastrear la pieza actualmente enfocada
 let currentFocusedIndex = 0;
-
-// Cerrar menú al presionar Escape
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !accMenuPanel.classList.contains('hidden')) {
         closeMenu();
         return;
     }
 
-    // Navegación con WASD y flechas del teclado
     const gameSection = document.getElementById('game-section');
-    if (gameSection.style.display === 'none') return; // Solo funciona cuando el juego está activo
+    if (gameSection.style.display === 'none') return;
 
     let newIndex = currentFocusedIndex;
     let moved = false;
-
-    // Detectar teclas de dirección
     if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
         e.preventDefault();
         newIndex = currentFocusedIndex - gridSize;
@@ -183,16 +173,14 @@ document.addEventListener('keydown', (e) => {
         moved = true;
     }
 
-    // Validar que el nuevo índice esté dentro del rango
     if (moved && newIndex >= 0 && newIndex < totalPieces) {
-        // Validar movimiento horizontal (no saltar de fila)
         if ((e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') &&
             Math.floor(currentFocusedIndex / gridSize) !== Math.floor(newIndex / gridSize)) {
-            return; // No permitir salto de fila hacia la izquierda
+            return;
         }
         if ((e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') &&
             Math.floor(currentFocusedIndex / gridSize) !== Math.floor(newIndex / gridSize)) {
-            return; // No permitir salto de fila hacia la derecha
+            return;
         }
 
         currentFocusedIndex = newIndex;
@@ -204,7 +192,6 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Cerrar menú si se hace clic fuera
 document.addEventListener('click', (e) => {
     if (!accMenuPanel.contains(e.target) && e.target !== accMenuBtn) {
         accMenuPanel.classList.add('hidden');
@@ -215,44 +202,32 @@ document.addEventListener('click', (e) => {
 function changeGridSize(size) {
     gridSize = parseInt(size);
     totalPieces = gridSize * gridSize;
-
-    // Actualizar CSS Grid dinámicamente
     boardElement.style.gridTemplateColumns = `repeat(${gridSize}, var(--piece-size))`;
     boardElement.style.gridTemplateRows = `repeat(${gridSize}, var(--piece-size))`;
-
     startGame();
     announce(`Tamaño del tablero cambiado a ${gridSize} por ${gridSize}. Juego reiniciado.`);
 }
 
 function startGame() {
-    // Reiniciar variables
     pieces = [];
     selectedPieceIndex = null;
     moves = 0;
     seconds = 0;
     movesDisplay.innerText = `Movimientos: 0`;
-    winMessage.style.display = 'none';
+    winMessage.classList.add('hidden');
+    winMessage.style.display = '';
     boardElement.style.border = "none";
     stopTimer();
     if (isTimerActive) startTimer();
-
-    // Generar orden inicial correcto
     let initialOrder = Array.from({ length: totalPieces }, (_, i) => i);
-
-    // Barajar
     for (let i = initialOrder.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [initialOrder[i], initialOrder[j]] = [initialOrder[j], initialOrder[i]];
     }
 
-    // Limpiar tablero
     boardElement.innerHTML = '';
-
-    // Asegurar columnas correctas si primera carga
     boardElement.style.gridTemplateColumns = `repeat(${gridSize}, var(--piece-size))`;
     boardElement.style.gridTemplateRows = `repeat(${gridSize}, var(--piece-size))`;
-
-    // Crear piezas
     initialOrder.forEach((originalIndex, currentIndex) => {
         createPiece(originalIndex, currentIndex);
     });
@@ -269,12 +244,9 @@ function createPiece(originalIndex, currentIndex) {
     piece.setAttribute('tabindex', '0');
     piece.setAttribute('aria-label', `Pieza en posición ${currentIndex + 1}. Contenido: Parte ${originalIndex + 1}.`);
 
-    // Usar imagen de la categoría seleccionada
     if (selectedCategory && categories[selectedCategory]) {
         piece.style.backgroundImage = `url('${categories[selectedCategory].image}')`;
     }
-
-    // Calcular posición del background image
     const row = Math.floor(originalIndex / gridSize);
     const col = originalIndex % gridSize;
 
@@ -297,7 +269,6 @@ function createPiece(originalIndex, currentIndex) {
         }
     });
 
-    // Actualizar índice de foco cuando se enfoca una pieza
     piece.addEventListener('focus', () => {
         currentFocusedIndex = currentIndex;
     });
@@ -307,7 +278,7 @@ function createPiece(originalIndex, currentIndex) {
 }
 
 function handleInteraction(index) {
-    if (winMessage.style.display === 'block') return;
+    if (!winMessage.classList.contains('hidden')) return;
 
     const clickedPiece = document.querySelector(`[data-current="${index}"]`);
 
@@ -336,17 +307,13 @@ function swapPieces(indexA, indexB) {
     const domPieceA = document.querySelector(`[data-current="${indexA}"]`);
     const domPieceB = document.querySelector(`[data-current="${indexB}"]`);
 
-    // Intercambiar backgroundPosition
     const tempBg = domPieceA.style.backgroundPosition;
     domPieceA.style.backgroundPosition = domPieceB.style.backgroundPosition;
     domPieceB.style.backgroundPosition = tempBg;
-
-    // Intercambiar data-original
     const tempOriginal = domPieceA.dataset.original;
     domPieceA.dataset.original = domPieceB.dataset.original;
     domPieceB.dataset.original = tempOriginal;
 
-    // Accesibilidad
     domPieceA.setAttribute('aria-label', `Pieza en posición ${parseInt(indexA) + 1}. Contenido: Parte ${parseInt(domPieceA.dataset.original) + 1}.`);
     domPieceB.setAttribute('aria-label', `Pieza en posición ${parseInt(indexB) + 1}. Contenido: Parte ${parseInt(domPieceB.dataset.original) + 1}.`);
 
@@ -368,7 +335,7 @@ function checkWin() {
 
     if (correctCount === totalPieces) {
         stopTimer();
-        winMessage.style.display = 'block';
+        winMessage.classList.remove('hidden');
         announce("¡Felicidades! Has completado el rompecabezas correctamente.");
         boardElement.style.border = "5px solid #28a745";
     }
@@ -446,19 +413,13 @@ document.addEventListener('click', (e) => {
 function changeGridSize(size) {
     gridSize = parseInt(size);
     totalPieces = gridSize * gridSize;
-
-    // Actualizar texto del botón desplegable
     const btnText = document.getElementById('difficulty-selected-text');
     if (btnText) {
         if (size == 3) btnText.innerText = "Fácil (3x3)";
         if (size == 4) btnText.innerText = "Media (4x4)";
         if (size == 5) btnText.innerText = "Difícil (5x5)";
     }
-
-    // Cerrar menú
     closeDifficultyMenu();
-
-    // Actualizar CSS Grid dinámicamente
     boardElement.style.gridTemplateColumns = `repeat(${gridSize}, var(--piece-size))`;
     boardElement.style.gridTemplateRows = `repeat(${gridSize}, var(--piece-size))`;
 
@@ -470,11 +431,8 @@ function changeGridSize(size) {
 function toggleContrast() {
     document.body.classList.toggle('high-contrast');
     const isHigh = document.body.classList.contains('high-contrast');
-
     const btn = document.getElementById('contrast-toggle');
     const knob = btn.querySelector('span[aria-hidden="true"]');
-
-    // FIX: No more innerText overwrite. Manipulate classes.
     btn.setAttribute('aria-checked', isHigh.toString());
 
     if (isHigh) {
