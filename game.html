@@ -5,177 +5,292 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego - Rompecabezas Accesible</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/styles.css"> <!-- CSS reducido para lógica específica -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
 </head>
 
-<body>
-
-
-    <!-- Selección de Categoría -->
-    <section id="category-selection" class="category-section">
-        <header class="category-header">
-            <h1>Rompecabezas Inclusivo</h1>
-            <p>Selecciona una categoría para comenzar:</p>
-        </header>
-
-        <div class="category-grid" role="group" aria-label="Selección de categoría">
-            <div class="category-card" tabindex="0" role="button" onclick="selectCategory('animales')"
-                onkeydown="if(event.key==='Enter' || event.key===' '){event.preventDefault(); selectCategory('animales');}"
-                aria-label="Categoría Animales: León majestuoso">
-                <div class="category-image"
-                    style="background-image: url('https://images.unsplash.com/photo-1546182990-dffeafbe841d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
-                </div>
-                <h2>🦁 Animales</h2>
-                <p>León majestuoso</p>
-            </div>
-
-            <div class="category-card" tabindex="0" role="button" onclick="selectCategory('paisajes')"
-                onkeydown="if(event.key==='Enter' || event.key===' '){event.preventDefault(); selectCategory('paisajes');}"
-                aria-label="Categoría Paisajes: Montañas nevadas">
-                <div class="category-image"
-                    style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
-                </div>
-                <h2>🏔️ Paisajes</h2>
-                <p>Montañas nevadas</p>
-            </div>
-
-            <div class="category-card" tabindex="0" role="button" onclick="selectCategory('comida')"
-                onkeydown="if(event.key==='Enter' || event.key===' '){event.preventDefault(); selectCategory('comida');}"
-                aria-label="Categoría Comida: Frutas frescas">
-                <div class="category-image"
-                    style="background-image: url('https://images.unsplash.com/photo-1619566636858-adf3ef46400b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
-                </div>
-                <h2>🍓 Comida</h2>
-                <p>Frutas frescas</p>
-            </div>
-
-            <div class="category-card" tabindex="0" role="button" onclick="selectCategory('arte')"
-                onkeydown="if(event.key==='Enter' || event.key===' '){event.preventDefault(); selectCategory('arte');}"
-                aria-label="Categoría Arte: Arte abstracto colorido">
-                <div class="category-image"
-                    style="background-image: url('https://images.unsplash.com/photo-1541961017774-22349e4a1262?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
-                </div>
-                <h2>🎨 Arte</h2>
-                <p>Arte abstracto colorido</p>
-            </div>
+<body
+    class="bg-slate-50 text-slate-800 min-h-screen flex flex-col transition-colors duration-300 relative overflow-x-hidden">
+    <!-- Background Decoration -->
+    <div class="fixed inset-0 -z-50 overflow-hidden pointer-events-none">
+        <div
+            class="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-50/50 via-slate-50 to-white">
         </div>
+        <div
+            class="absolute top-20 left-20 w-72 h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob">
+        </div>
+        <div
+            class="absolute top-20 right-20 w-72 h-72 bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000">
+        </div>
+    </div>
 
-        <div style="margin-top: 30px;">
-            <a href="index.html" style="text-decoration: none;">
-                <button>🏠 Volver al Inicio</button>
+    <section id="category-selection" class="flex flex-col items-center justify-center min-h-screen py-20 px-6 animate-fade-in relative z-10">
+        
+        <header class="w-full max-w-4xl mx-auto text-center mb-16 mt-10 flex flex-col items-center relative z-20">
+            
+            <h1 class="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tighter drop-shadow-sm">
+                Elige tu <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600">Aventura</span>
+            </h1>
+            
+            <p class="text-slate-500 text-lg md:text-2xl font-light leading-relaxed max-w-2xl mx-auto">
+                Selecciona una colección visual para generar tu rompecabezas.
+            </p>
+        </header>
+    
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-7xl mx-auto justify-items-center" role="group" aria-label="Selección de categoría">
+        
+            <button onclick="selectCategory('animales')" 
+                class="group relative h-[26rem] w-full rounded-[2rem] overflow-hidden focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-offset-4 transition-all duration-500 hover:-translate-y-2 shadow-lg hover:shadow-2xl hover:shadow-indigo-500/30 border border-slate-200 bg-white">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                    style="background-image: url('https://images.unsplash.com/photo-1546182990-dffeafbe841d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/60 opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+                <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-xl p-5 rounded-2xl border border-white/50 shadow-lg transform transition-all duration-300 group-hover:translate-y-0 translate-y-2">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-3xl filter drop-shadow-md group-hover:scale-125 transition-transform duration-300">🦁</span>
+                        <span class="bg-indigo-100 text-indigo-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Naturaleza</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 leading-tight">Animales</h2>
+                    <div class="mt-4 overflow-hidden h-0 group-hover:h-6 transition-all duration-300 opacity-0 group-hover:opacity-100">
+                        <span class="text-indigo-600 font-bold text-sm flex items-center">Jugar Ahora <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></span>
+                    </div>
+                </div>
+            </button>
+        
+            <button onclick="selectCategory('paisajes')" 
+                class="group relative h-[26rem] w-full rounded-[2rem] overflow-hidden focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-offset-4 transition-all duration-500 hover:-translate-y-2 shadow-lg hover:shadow-2xl hover:shadow-cyan-500/30 border border-slate-200 bg-white">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                    style="background-image: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/60 opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+                <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-xl p-5 rounded-2xl border border-white/50 shadow-lg transform transition-all duration-300 group-hover:translate-y-0 translate-y-2">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-3xl filter drop-shadow-md group-hover:scale-125 transition-transform duration-300">🏔️</span>
+                        <span class="bg-cyan-100 text-cyan-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Vistas</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 leading-tight">Paisajes</h2>
+                    <div class="mt-4 overflow-hidden h-0 group-hover:h-6 transition-all duration-300 opacity-0 group-hover:opacity-100">
+                        <span class="text-cyan-600 font-bold text-sm flex items-center">Jugar Ahora <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></span>
+                    </div>
+                </div>
+            </button>
+        
+            <button onclick="selectCategory('comida')" 
+                class="group relative h-[26rem] w-full rounded-[2rem] overflow-hidden focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-offset-4 transition-all duration-500 hover:-translate-y-2 shadow-lg hover:shadow-2xl hover:shadow-orange-500/30 border border-slate-200 bg-white">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                    style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/60 opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+                <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-xl p-5 rounded-2xl border border-white/50 shadow-lg transform transition-all duration-300 group-hover:translate-y-0 translate-y-2">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-3xl filter drop-shadow-md group-hover:scale-125 transition-transform duration-300">🍕</span>
+                        <span class="bg-orange-100 text-orange-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Delicioso</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 leading-tight">Comida</h2>
+                    <div class="mt-4 overflow-hidden h-0 group-hover:h-6 transition-all duration-300 opacity-0 group-hover:opacity-100">
+                        <span class="text-orange-600 font-bold text-sm flex items-center">Jugar Ahora <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></span>
+                    </div>
+                </div>
+            </button>
+        
+            <button onclick="selectCategory('arte')" 
+                class="group relative h-[26rem] w-full rounded-[2rem] overflow-hidden focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-offset-4 transition-all duration-500 hover:-translate-y-2 shadow-lg hover:shadow-2xl hover:shadow-pink-500/30 border border-slate-200 bg-white">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                    style="background-image: url('https://images.unsplash.com/photo-1547891654-e66ed7ebb968?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/60 opacity-60 group-hover:opacity-40 transition-opacity duration-300"></div>
+                <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-xl p-5 rounded-2xl border border-white/50 shadow-lg transform transition-all duration-300 group-hover:translate-y-0 translate-y-2">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-3xl filter drop-shadow-md group-hover:scale-125 transition-transform duration-300">🎨</span>
+                        <span class="bg-pink-100 text-pink-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">Creativo</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-900 leading-tight">Arte</h2>
+                    <div class="mt-4 overflow-hidden h-0 group-hover:h-6 transition-all duration-300 opacity-0 group-hover:opacity-100">
+                        <span class="text-pink-600 font-bold text-sm flex items-center">Jugar Ahora <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg></span>
+                    </div>
+                </div>
+            </button>
+        </div>
+    
+        <div class="mt-16 text-center">
+            <a href="index.html" class="inline-flex items-center gap-3 px-8 py-4 bg-white text-slate-700 font-bold rounded-full shadow-lg border border-slate-100 hover:bg-slate-50 hover:text-indigo-600 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                <div class="bg-slate-100 text-slate-500 rounded-full p-1 group-hover:bg-indigo-100 group-hover:text-indigo-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                </div>
+                Volver al Inicio
             </a>
         </div>
     </section>
 
     <!-- Sección del Juego -->
-    <div id="game-section" style="display: none;">
-        <header>
-            <h1>Rompecabezas Inclusivo</h1>
-            <div class="instructions">
-                <p><strong>Objetivo:</strong> Reorganiza la imagen.</p>
-                <p><strong>Cómo jugar (Accesible):</strong>
-                    1. Haz clic (o pulsa Enter) en una pieza para seleccionarla.<br>
-                    2. Haz clic en otra pieza para intercambiarlas de lugar.<br>
-                    3. Navega entre piezas con <strong>Tab</strong>, <strong>W/A/S/D</strong> o las <strong>flechas del
-                        teclado</strong>.<br>
-                    No es necesario arrastrar.
-                </p>
+    <div id="game-section" class="flex flex-col items-center w-full max-w-5xl mx-auto p-4 md:p-8"
+        style="display: none;">
+
+        <header
+            class="w-full mb-8 flex flex-col md:flex-row justify-between items-center gap-6 glass-panel p-6 rounded-2xl bg-white/70 backdrop-blur-md border border-white/50 shadow-sm">
+            <div>
+                <h1 class="text-3xl font-black text-slate-800 tracking-tight">Rompecabezas</h1>
+                <p class="text-slate-500 text-sm font-medium">Organiza las piezas para completar</p>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="showCategorySelection()"
+                    class="px-5 py-2.5 text-sm font-bold text-slate-600 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 hover:border-slate-300 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    Cambiar Imagen
+                </button>
+                <button onclick="startGame()"
+                    class="px-5 py-2.5 text-sm font-bold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 hover:shadow-lg hover:-translate-y-0.5 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-indigo-200">
+                    Reiniciar Partida
+                </button>
             </div>
         </header>
 
-        <nav class="controls" aria-label="Controles del juego">
-            <button onclick="startGame()">Reiniciar Juego</button>
+        <nav class="w-full bg-white/80 backdrop-blur-sm p-2 rounded-2xl shadow-sm border border-slate-200 mb-8 flex flex-wrap gap-4 items-center justify-between pl-4 relative z-40"
+            aria-label="Controles del juego">
 
-            <!-- Selector de Dificultad (Separado de Accesibilidad) -->
-            <div class="difficulty-control">
-                <select id="grid-size" onchange="changeGridSize(this.value)" aria-label="Seleccionar dificultad">
-                    <option value="3" selected>Dificultad: Fácil (3x3)</option>
-                    <option value="4">Dificultad: Media (4x4)</option>
-                    <option value="5">Dificultad: Difícil (5x5)</option>
+            <div class="flex items-center gap-3">
+                <label for="grid-size" class="text-sm font-semibold text-slate-700">Dificultad:</label>
+                <select id="grid-size" onchange="changeGridSize(this.value)"
+                    class="form-select text-sm border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 py-2 pl-3 pr-8">
+                    <option value="3" selected>Fácil (3x3)</option>
+                    <option value="4">Media (4x4)</option>
+                    <option value="5">Difícil (5x5)</option>
                 </select>
             </div>
-
-            <div class="accessibility-menu-container">
-                <button id="acc-menu-btn" aria-haspopup="true" aria-expanded="false" onclick="toggleMenu()">
-                    Accesibilidad ♿
+        
+            <div class="relative accessibility-menu-container">
+                <button id="acc-menu-btn" onclick="toggleMenu()"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-indigo-700 bg-indigo-50 rounded-lg hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    aria-haspopup="true" aria-expanded="false">
+                    Accesibilidad
                 </button>
-                <div id="acc-menu-panel" class="accessibility-panel hidden" role="menu" aria-labelledby="acc-menu-btn">
-
-                    <div class="menu-item">
-                        <label for="contrast-toggle">Alto Contraste</label>
-                        <button id="contrast-toggle" onclick="toggleContrast()"
-                            aria-pressed="false">Desactivado</button>
-                    </div>
-
-                    <div class="menu-item">
-                        <label for="color-blindness-select">Daltonismo</label>
-                        <select id="color-blindness-select" onchange="changeColorBlindnessMode(this.value)">
-                            <option value="normal">Normal</option>
-                            <option value="protanopia">Protanopía (Rojo)</option>
-                            <option value="deuteranopia">Deuteranopía (Verde)</option>
-                            <option value="tritanopia">Tritanopía (Azul)</option>
-                            <option value="achromatopsia">Acromatopsia (Grises)</option>
-                        </select>
+            
+                <div id="acc-menu-panel"
+                    class="hidden absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-slate-200 p-4 z-50 transform origin-top-right transition-all">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Preferencias Visuales</h3>
+            
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <label for="contrast-toggle" class="text-sm font-medium text-slate-700">Alto Contraste</label>
+                            <button id="contrast-toggle" onclick="toggleContrast()"
+                                class="px-3 py-1 text-xs font-bold rounded-md bg-slate-200 hover:bg-slate-300 text-slate-700 transition-colors focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500">
+                                Desactivado
+                            </button>
+                        </div>
+                    
+                        <div>
+                            <label for="color-blindness-select" class="block text-sm font-medium text-slate-700 mb-1">Modo Daltonismo</label>
+                            <select id="color-blindness-select" onchange="changeColorBlindnessMode(this.value)"
+                                class="block w-full text-sm border-slate-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50">
+                                <option value="normal">Normal</option>
+                                <option value="protanopia">Protanopía (Rojo)</option>
+                                <option value="deuteranopia">Deuteranopía (Verde)</option>
+                                <option value="tritanopia">Tritanopía (Azul)</option>
+                                <option value="achromatopsia">Acromatopsia (Grises)</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Filtros SVG para Daltonismo (Ocultos) -->
-            <svg style="display: none">
-                <defs>
-                    <filter id="protanopia">
-                        <feColorMatrix type="matrix" values="0.567, 0.433, 0, 0, 0
-                                     0.558, 0.442, 0, 0, 0
-                                     0, 0.242, 0.758, 0, 0
-                                     0, 0, 0, 1, 0" />
-                    </filter>
-                    <filter id="deuteranopia">
-                        <feColorMatrix type="matrix" values="0.625, 0.375, 0, 0, 0
-                                     0.7, 0.3, 0, 0, 0
-                                     0, 0.3, 0.7, 0, 0
-                                     0, 0, 0, 1, 0" />
-                    </filter>
-                    <filter id="tritanopia">
-                        <feColorMatrix type="matrix" values="0.95, 0.05, 0, 0, 0
-                                     0, 0.433, 0.567, 0, 0
-                                     0, 0.475, 0.525, 0, 0
-                                     0, 0, 0, 1, 0" />
-                    </filter>
-                    <filter id="achromatopsia">
-                        <feColorMatrix type="matrix" values="0.299, 0.587, 0.114, 0, 0
-                                     0.299, 0.587, 0.114, 0, 0
-                                     0.299, 0.587, 0.114, 0, 0
-                                     0, 0, 0, 1, 0" />
-                    </filter>
-                </defs>
-            </svg>
-
-            <button onclick="showCategorySelection()">Cambiar Categoría</button>
-
-            <a href="index.html" style="text-decoration: none;">
-                <button>Volver al Inicio</button>
-            </a>
         </nav>
 
-        <!-- Región ARIA Live para anunciar cambios a lectores de pantalla -->
-        <div id="announcer" class="sr-only" aria-live="polite" style="position:absolute; left:-9999px;"></div>
-
-        <div class="status-bar">
-            <span id="timer-display">Tiempo: 00:00</span>
-            <span id="moves-display">Movimientos: 0</span>
+        <!-- Status & Stats -->
+        <div
+            class="flex gap-6 mb-8 text-slate-700 font-mono text-lg bg-white/90 backdrop-blur px-8 py-3 rounded-2xl border border-indigo-100 shadow-md shadow-indigo-500/5">
+            <span id="timer-display" class="flex items-center gap-3"><span
+                    class="text-2xl filter drop-shadow-sm">⏱️</span> <span class="font-bold">00:00</span></span>
+            <span class="w-px h-8 bg-slate-200"></span>
+            <span id="moves-display" class="flex items-center gap-3"><span
+                    class="text-2xl filter drop-shadow-sm">👣</span> <span class="font-bold">0</span></span>
         </div>
 
-        <!-- Tablero del juego -->
-        <main class="game-board" id="board" role="grid" aria-label="Tablero de rompecabezas de 3 por 3">
-            <!-- Las piezas se generarán aquí con JS -->
-        </main>
+        <!-- Tablero del Juego -->
+        <div class="p-4 bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100">
+            <main class="game-board relative rounded-xl overflow-hidden" id="board" role="grid"
+                aria-label="Tablero de rompecabezas">
+                <!-- Las piezas se generarán aquí con JS -->
+            </main>
+        </div>
 
-        <div id="win-message" role="alert">
-            <h2>¡Felicidades!</h2>
-            <p>Has completado el rompecabezas.</p>
+        <!-- Mensaje de Victoria (Modal) -->
+        <div id="win-message"
+            class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+            role="alert">
+            <div
+                class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center border-4 border-emerald-400 transform scale-100 animate-bounce-in">
+                <div class="text-6xl mb-4">🎉</div>
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">¡Felicidades!</h2>
+                <p class="text-slate-600 mb-6">Has completado el rompecabezas.</p>
+                <button onclick="startGame()"
+                    class="w-full py-3 px-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors shadow-lg shadow-emerald-200">
+                    Jugar de nuevo
+                </button>
+            </div>
+        </div>
+
+<div id="announcer" class="sr-only" aria-live="polite"></div>
+
+        <div class="mt-8 mb-4 w-full max-w-3xl mx-auto animate-fade-in delay-100">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-3 px-6 py-3 bg-white/60 backdrop-blur-sm border border-slate-200 rounded-2xl shadow-sm text-sm text-slate-600">
+                
+                <div class="flex items-center gap-2 font-semibold text-slate-700">
+                    <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>Controles:</span>
+                </div>
+
+                <div class="hidden md:block w-px h-4 bg-slate-300 mx-2"></div>
+
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">🖱️</span> <span>Mouse</span>
+                </div>
+
+                <span class="text-slate-300 hidden md:inline">|</span>
+
+                <div class="flex items-center gap-2 flex-wrap justify-center">
+                    <span class="text-lg">⌨️</span> <span>Teclado:</span>
+                    
+                    <kbd class="px-2 py-1 bg-slate-50 border border-slate-300 border-b-2 rounded-lg text-xs font-sans font-bold text-slate-500 min-w-[2rem] text-center shadow-sm">Tab</kbd>
+                    <span class="text-xs text-slate-400">Navegar</span>
+                    
+                    <kbd class="px-2 py-1 bg-slate-50 border border-slate-300 border-b-2 rounded-lg text-xs font-sans font-bold text-slate-500 min-w-[2rem] text-center shadow-sm">Enter</kbd>
+                    <span class="text-xs text-slate-400">Mover</span>
+                </div>
+            </div>
         </div>
     </div>
 
+    <footer class="py-8 bg-slate-900 text-slate-400 text-center mt-auto w-full z-10">
+        <p class="font-medium">Proyecto de Accesibilidad - PUCESA</p>
+    </footer>
+
+    <!-- Filtros SVG (Ocultos) -->
+    <svg style="display: none">
+        <defs>
+            <filter id="protanopia">
+                <feColorMatrix type="matrix"
+                    values="0.567, 0.433, 0, 0, 0 0.558, 0.442, 0, 0, 0 0, 0.242, 0.758, 0, 0 0, 0, 0, 1, 0" />
+            </filter>
+            <filter id="deuteranopia">
+                <feColorMatrix type="matrix"
+                    values="0.625, 0.375, 0, 0, 0 0.7, 0.3, 0, 0, 0 0, 0.3, 0.7, 0, 0 0, 0, 0, 1, 0" />
+            </filter>
+            <filter id="tritanopia">
+                <feColorMatrix type="matrix"
+                    values="0.95, 0.05, 0, 0, 0 0, 0.433, 0.567, 0, 0 0, 0.475, 0.525, 0, 0 0, 0, 0, 1, 0" />
+            </filter>
+            <filter id="achromatopsia">
+                <feColorMatrix type="matrix"
+                    values="0.299, 0.587, 0.114, 0, 0 0.299, 0.587, 0.114, 0, 0 0.299, 0.587, 0.114, 0, 0 0, 0, 0, 1, 0" />
+            </filter>
+        </defs>
+    </svg>
 
     <script src="js/game.js"></script>
 </body>
