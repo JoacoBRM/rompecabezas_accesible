@@ -56,6 +56,27 @@ window.onload = function () {
     showCategorySelection();
 };
 
+// --- Lógica del Menú de Daltonismo ---
+const cbMenuPanel = document.getElementById('cb-menu-panel');
+const cbMenuBtn = document.getElementById('cb-menu-btn');
+
+function toggleCBMenu() {
+    const isHidden = cbMenuPanel.classList.contains('hidden');
+    if (isHidden) {
+        cbMenuPanel.classList.remove('hidden');
+        cbMenuBtn.setAttribute('aria-expanded', 'true');
+    } else {
+        closeCBMenu();
+    }
+}
+
+function closeCBMenu() {
+    if (cbMenuPanel) {
+        cbMenuPanel.classList.add('hidden');
+        cbMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+}
+
 function changeColorBlindnessMode(mode) {
     // Remove existing filter classes
     document.body.classList.remove('cb-protanopia', 'cb-deuteranopia', 'cb-tritanopia', 'cb-achromatopsia');
@@ -68,6 +89,21 @@ function changeColorBlindnessMode(mode) {
     }
 
     localStorage.setItem('colorBlindnessMode', mode);
+
+    // Update UI Custom Dropdown Text
+    const btnText = document.getElementById('cb-selected-text');
+    if (btnText) {
+        const labels = {
+            'normal': 'Normal',
+            'protanopia': 'Protanopía (Rojo)',
+            'deuteranopia': 'Deuteranopía (Verde)',
+            'tritanopia': 'Tritanopía (Azul)',
+            'achromatopsia': 'Acromatopsia (Grises)'
+        };
+        btnText.innerText = labels[mode] || 'Normal';
+    }
+
+    closeCBMenu();
 }
 
 // --- Lógica de Selección de Categoría ---
@@ -368,13 +404,90 @@ function stopTimer() {
     clearInterval(timerInterval);
 }
 
+// --- Lógica del Menú de Dificultad ---
+const diffMenuPanel = document.getElementById('difficulty-menu-panel');
+const diffMenuBtn = document.getElementById('difficulty-menu-btn');
+
+function toggleDifficultyMenu() {
+    const isHidden = diffMenuPanel.classList.contains('hidden');
+    if (isHidden) {
+        diffMenuPanel.classList.remove('hidden');
+        diffMenuBtn.setAttribute('aria-expanded', 'true');
+    } else {
+        closeDifficultyMenu();
+    }
+}
+
+function closeDifficultyMenu() {
+    if (diffMenuPanel) {
+        diffMenuPanel.classList.add('hidden');
+        diffMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+}
+
+// Cerrar menús al hacer clic fuera
+document.addEventListener('click', (e) => {
+    // Accesibilidad
+    if (accMenuPanel && !accMenuPanel.contains(e.target) && e.target !== accMenuBtn && !accMenuBtn.contains(e.target)) {
+        accMenuPanel.classList.add('hidden');
+        if (accMenuBtn) accMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+    // Dificultad
+    if (diffMenuPanel && !diffMenuPanel.contains(e.target) && e.target !== diffMenuBtn && !diffMenuBtn.contains(e.target)) {
+        closeDifficultyMenu();
+    }
+    // Daltonismo
+    if (typeof cbMenuPanel !== 'undefined' && cbMenuPanel && !cbMenuPanel.contains(e.target) && e.target !== cbMenuBtn && !cbMenuBtn.contains(e.target)) {
+        closeCBMenu();
+    }
+});
+
+
+function changeGridSize(size) {
+    gridSize = parseInt(size);
+    totalPieces = gridSize * gridSize;
+
+    // Actualizar texto del botón desplegable
+    const btnText = document.getElementById('difficulty-selected-text');
+    if (btnText) {
+        if (size == 3) btnText.innerText = "Fácil (3x3)";
+        if (size == 4) btnText.innerText = "Media (4x4)";
+        if (size == 5) btnText.innerText = "Difícil (5x5)";
+    }
+
+    // Cerrar menú
+    closeDifficultyMenu();
+
+    // Actualizar CSS Grid dinámicamente
+    boardElement.style.gridTemplateColumns = `repeat(${gridSize}, var(--piece-size))`;
+    boardElement.style.gridTemplateRows = `repeat(${gridSize}, var(--piece-size))`;
+
+    startGame();
+    announce(`Tamaño del tablero cambiado a ${gridSize} por ${gridSize}. Juego reiniciado.`);
+}
+
+
 function toggleContrast() {
     document.body.classList.toggle('high-contrast');
     const isHigh = document.body.classList.contains('high-contrast');
 
     const btn = document.getElementById('contrast-toggle');
-    btn.innerText = isHigh ? "Activado" : "Desactivado";
-    btn.setAttribute('aria-pressed', isHigh.toString());
+    const knob = btn.querySelector('span[aria-hidden="true"]');
+
+    // FIX: No more innerText overwrite. Manipulate classes.
+    btn.setAttribute('aria-checked', isHigh.toString());
+
+    if (isHigh) {
+        btn.classList.remove('bg-slate-200');
+        btn.classList.add('bg-indigo-600');
+        knob.classList.add('translate-x-5');
+        knob.classList.remove('translate-x-0');
+    } else {
+        btn.classList.add('bg-slate-200');
+        btn.classList.remove('bg-indigo-600');
+        knob.classList.add('translate-x-0');
+        knob.classList.remove('translate-x-5');
+    }
 
     announce(isHigh ? "Modo alto contraste activado" : "Modo alto contraste desactivado");
 }
