@@ -197,23 +197,7 @@
                         <h1 class="text-2xl font-black text-slate-800 tracking-tight hidden sm:block">Rompecabezas</h1>
                     </div>
 
-                    <!-- Cápsula de Estadísticas Central -->
-                    <div
-                        class="hidden md:flex items-center bg-slate-100/80 rounded-full px-6 py-2 border border-slate-200 shadow-inner gap-8">
-                        <span id="timer-display" class="flex items-center gap-3 text-slate-600 font-mono font-bold">
-                            <span class="text-indigo-500 animate-pulse">⏱️</span> 00:00
-                        </span>
-                        <div class="w-px h-4 bg-slate-300"></div>
-                        <span id="moves-display" class="flex items-center gap-3 text-slate-600 font-mono font-bold">
-                            <span class="text-emerald-500">👣</span> 0
-                        </span>
-                        <div class="w-px h-4 bg-slate-300"></div>
-                        <button id="timer-toggle" onclick="toggleTimer()"
-                            class="text-sm font-bold text-slate-500 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded px-2 min-h-[44px] flex items-center"
-                            aria-label="Pausar juego">
-                            Pausar
-                        </button>
-                    </div>
+                    <!-- Cápsula de Estadísticas (Movida abajo) -->
 
                     <!-- Controles Derechos -->
                     <div class="flex items-center gap-4">
@@ -240,11 +224,7 @@
                 </div>
             </div>
 
-            <!-- Estadísticas Móviles (Visible solo en pantallas pequeñas) -->
-            <div class="md:hidden flex justify-around py-3 bg-slate-50 border-t border-slate-200">
-                <span id="timer-display-mobile" class="text-sm font-mono font-semibold text-slate-600">⏱️ --:--</span>
-                <span id="moves-display-mobile" class="text-sm font-mono font-semibold text-slate-600">👣 0</span>
-            </div>
+            <!-- Estadísticas Móviles (Eliminado) -->
         </nav>
 
         <!-- Área Principal del Juego -->
@@ -371,7 +351,31 @@
                 </main>
             </div>
 
-            <!-- Pie de Controles e Información -->
+
+
+            <!-- Panel de Estadísticas (Debajo del Puzzle) -->
+            <div class="w-full max-w-xl mx-auto mb-8 mt-6 px-4">
+                <div
+                    class="bg-white/95 backdrop-blur-md rounded-2xl p-4 border-2 border-indigo-50 shadow-xl shadow-indigo-200/40 flex flex-wrap items-center justify-center sm:justify-around gap-4 mx-auto transition-all duration-300">
+                    <span id="timer-display"
+                        class="flex items-center gap-3 text-slate-700 font-mono font-bold text-lg bg-indigo-50/50 px-4 py-2 rounded-xl border border-indigo-100/50">
+                        <span class="text-indigo-600 animate-pulse text-2xl">⏱️</span>
+                        <span class="min-w-[4ch] tracking-wider">00:00</span>
+                    </span>
+
+                    <span id="moves-display"
+                        class="flex items-center gap-3 text-slate-700 font-mono font-bold text-lg bg-emerald-50/50 px-4 py-2 rounded-xl border border-emerald-100/50">
+                        <span class="text-emerald-600 text-2xl">👣</span>
+                        <span>0</span>
+                    </span>
+
+                    <button id="timer-toggle" onclick="toggleTimer()"
+                        class="text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 py-2.5 px-6 rounded-xl transition-all shadow-lg shadow-indigo-300 hover:shadow-indigo-400 focus:outline-none focus:ring-4 focus:ring-indigo-200 min-h-[44px] flex items-center gap-2 transform hover:-translate-y-0.5"
+                        aria-label="Pausar juego">
+                        <span class="uppercase tracking-wider text-xs">Pausar</span>
+                    </button>
+                </div>
+            </div>
             <div class="mt-12 transition-opacity duration-300">
                 <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-700 font-medium">
                     <span class="flex items-center gap-2"><kbd
