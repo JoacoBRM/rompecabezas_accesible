@@ -217,8 +217,15 @@ function startGame() {
     winMessage.classList.add('hidden');
     winMessage.style.display = '';
     boardElement.style.border = "none";
+    boardElement.style.border = "none";
     stopTimer();
-    if (isTimerActive) startTimer();
+    isTimerActive = true;
+    startTimer();
+    const timerBtn = document.getElementById('timer-toggle');
+    if (timerBtn) {
+        timerBtn.innerText = "Pausar";
+        timerBtn.setAttribute('aria-pressed', 'false');
+    }
     let initialOrder = Array.from({ length: totalPieces }, (_, i) => i);
     for (let i = initialOrder.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -279,6 +286,10 @@ function createPiece(originalIndex, currentIndex) {
 
 function handleInteraction(index) {
     if (!winMessage.classList.contains('hidden')) return;
+    if (!isTimerActive) {
+        announce("El juego está pausado. Reanuda para continuar.");
+        return;
+    }
 
     const clickedPiece = document.querySelector(`[data-current="${index}"]`);
 
@@ -348,12 +359,16 @@ function toggleTimer() {
 
     if (isTimerActive) {
         startTimer();
-        btn.innerText = "Activado";
-        btn.setAttribute('aria-pressed', 'true');
+        if (btn) btn.innerText = "Pausar";
+        if (btn) btn.setAttribute('aria-pressed', 'false');
+        announce("Juego reanudado");
+        boardElement.classList.remove('opacity-50', 'pointer-events-none');
     } else {
         stopTimer();
-        btn.innerText = "Pausado";
-        btn.setAttribute('aria-pressed', 'false');
+        if (btn) btn.innerText = "Reanudar";
+        if (btn) btn.setAttribute('aria-pressed', 'true');
+        announce("Juego pausado");
+        boardElement.classList.add('opacity-50', 'pointer-events-none');
     }
 }
 
