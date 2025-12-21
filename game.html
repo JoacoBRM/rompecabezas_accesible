@@ -12,7 +12,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-        }
+        }   
     </style>
 </head>
 
@@ -298,15 +298,6 @@
                     <div id="acc-menu-panel"
                         class="hidden absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 p-5 transform origin-top-right transition-all animate-fade-in z-50">
 
-                        <div class="flex items-center justify-between mb-4 pb-4 border-b border-slate-50">
-                            <h3 class="font-bold text-slate-800">Ajustes Visuales</h3>
-                            <button onclick="closeMenu()" class="text-slate-400 hover:text-slate-600"><svg
-                                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"></path>
-                                </svg></button>
-                        </div>
-
                         <div class="space-y-5">
                             <div class="flex flex-col gap-2">
                                 <div class="flex justify-between items-center">
@@ -382,9 +373,22 @@
                     <span class="flex items-center gap-2"><kbd
                             class="font-sans px-2 py-0.5 bg-white border border-slate-200 rounded-lg shadow-sm text-xs">Enter</kbd>
                         Seleccionar</span>
-                    <span class="flex items-center gap-2"><kbd
-                            class="font-sans px-2 py-0.5 bg-white border border-slate-200 rounded-lg shadow-sm text-xs">Esc</kbd>
-                        Menú</span>
+                    <span class="flex items-center gap-2 text-slate-700">
+                  <div class="inline-flex gap-1">
+                    <kbd class="px-2 py-0.5 bg-white border border-slate-200 rounded shadow-sm text-xs font-bold">WASD</kbd>
+                  </div>
+
+                  <span class="text-slate-600">/</span>
+
+                  <div class="inline-flex gap-1">
+                    <kbd class="px-1.5 py-0.5 bg-white border border-slate-200 rounded shadow-sm text-xs">↑</kbd>
+                    <kbd class="px-1.5 py-0.5 bg-white border border-slate-200 rounded shadow-sm text-xs">←</kbd>
+                    <kbd class="px-1.5 py-0.5 bg-white border border-slate-200 rounded shadow-sm text-xs">↓</kbd>
+                    <kbd class="px-1.5 py-0.5 bg-white border border-slate-200 rounded shadow-sm text-xs">→</kbd>
+                  </div>
+              
+                  <span class="ml-2">Mover piezas</span>
+                </span>
                 </div>
             </div>
 
