@@ -146,6 +146,13 @@ function closeMenu() {
 
 let currentFocusedIndex = 0;
 document.addEventListener('keydown', (e) => {
+    // Permitir reiniciar con Enter si el mensaje de victoria está visible
+    if (!winMessage.classList.contains('hidden') && e.key === 'Enter') {
+        e.preventDefault();
+        startGame();
+        return;
+    }
+
     if (e.key === 'Escape' && !accMenuPanel.classList.contains('hidden')) {
         closeMenu();
         return;
@@ -352,9 +359,17 @@ function checkWin() {
 
     if (correctCount === totalPieces) {
         stopTimer();
-        winMessage.classList.remove('hidden');
-        announce("¡Felicidades! Has completado el rompecabezas correctamente.");
+        isTimerActive = false; // Bloquear movimientos inmediatamente
         boardElement.style.border = "5px solid #28a745";
+
+        // Retraso para evitar que el Enter final reinicie el juego inmediatamente
+        setTimeout(() => {
+            winMessage.classList.remove('hidden');
+            announce("¡Felicidades! Has completado el rompecabezas correctamente.");
+            // Poner el foco en el botón de jugar de nuevo
+            const restartBtn = winMessage.querySelector('button');
+            if (restartBtn) restartBtn.focus();
+        }, 500);
     }
 }
 
