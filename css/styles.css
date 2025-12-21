@@ -143,7 +143,7 @@ body.high-contrast #contrast-toggle span[aria-hidden="true"] {
   border-width: 0;
 }
 
-/* --- Custom Animations --- */
+/* --- Animaciones Personalizadas --- */
 @keyframes blob {
   0% {
     transform: translate(0px, 0px) scale(1);

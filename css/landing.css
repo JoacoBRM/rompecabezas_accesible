@@ -22,7 +22,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Animated gradient background */
+/* Fondo de degradado animado */
 @keyframes gradientShift {
     0% {
         background-position: 0% 50%;
@@ -37,7 +37,7 @@ body {
     }
 }
 
-/* Decorative floating elements */
+/* Elementos flotantes decorativos */
 body::before,
 body::after {
     content: '';
@@ -98,7 +98,7 @@ body::after {
     margin: 0 auto 50px auto;
 }
 
-/* Hero Title with gradient text */
+/* Título Hero con texto degradado */
 .hero-title {
     font-size: 4.5rem;
     background: linear-gradient(135deg, #fff 0%, #f0f0f0 50%, #fff 100%);
@@ -135,7 +135,7 @@ body::after {
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Premium Play Button */
+/* Botón de Jugar Premium */
 .play-button {
     display: inline-block;
     text-decoration: none;
@@ -208,7 +208,7 @@ body::after {
     outline-offset: 6px;
 }
 
-/* Feature Cards with Glassmorphism */
+/* Tarjetas de características con efecto cristal (Glassmorphism) */
 .features {
     display: flex;
     justify-content: center;
@@ -313,7 +313,7 @@ body::after {
     font-weight: 300;
 }
 
-/* Footer */
+/* Pie de página */
 footer {
     margin-top: 100px;
     padding: 30px 20px;
@@ -323,7 +323,7 @@ footer {
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Animations */
+/* --- Animaciones Personalizadas --- */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -348,7 +348,7 @@ footer {
     }
 }
 
-/* Responsive Design */
+/* Diseño Responsivo */
 @media (max-width: 768px) {
     .hero-title {
         font-size: 3rem;
@@ -383,7 +383,7 @@ footer {
     }
 }
 
-/* Reduced Motion Preferences */
+/* Preferencias de Movimiento Reducido */
 @media (prefers-reduced-motion: reduce) {
 
     *,
