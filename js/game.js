@@ -48,7 +48,8 @@ window.onload = function () {
     const savedColorBlindness = localStorage.getItem('colorBlindnessMode') || 'normal';
     if (savedColorBlindness !== 'normal') {
         changeColorBlindnessMode(savedColorBlindness);
-        // Sync selector
+        changeColorBlindnessMode(savedColorBlindness);
+        // Sincronizar selector
         const cbSelect = document.getElementById('color-blindness-select');
         if (cbSelect) cbSelect.value = savedColorBlindness;
     }
@@ -208,6 +209,7 @@ function changeGridSize(size) {
     announce(`Tamaño del tablero cambiado a ${gridSize} por ${gridSize}. Juego reiniciado.`);
 }
 
+// Inicia o reinicia el juego, mezclando las piezas y reseteando estado
 function startGame() {
     pieces = [];
     selectedPieceIndex = null;
@@ -242,6 +244,7 @@ function startGame() {
     announce(`Juego nuevo de ${gridSize} por ${gridSize} iniciado.`);
 }
 
+// Crea un elemento visual para una pieza del rompecabezas
 function createPiece(originalIndex, currentIndex) {
     const piece = document.createElement('div');
     piece.className = 'puzzle-piece';
@@ -284,6 +287,7 @@ function createPiece(originalIndex, currentIndex) {
     pieces.push(piece);
 }
 
+// Maneja la interacción (clic o teclado) con una pieza
 function handleInteraction(index) {
     if (!winMessage.classList.contains('hidden')) return;
     if (!isTimerActive) {
@@ -314,6 +318,7 @@ function handleInteraction(index) {
     }
 }
 
+// Intercambia la posición de dos piezas en el tablero
 function swapPieces(indexA, indexB) {
     const domPieceA = document.querySelector(`[data-current="${indexA}"]`);
     const domPieceB = document.querySelector(`[data-current="${indexB}"]`);
@@ -331,6 +336,7 @@ function swapPieces(indexA, indexB) {
     announce(`Piezas intercambiadas.`);
 }
 
+// Verifica si todas las piezas están en su posición original
 function checkWin() {
     let correctCount = 0;
     const currentPieces = document.querySelectorAll('.puzzle-piece');
@@ -353,6 +359,7 @@ function checkWin() {
 }
 
 // --- Utilidades ---
+// Alterna el estado de pausa del temporizador
 function toggleTimer() {
     const btn = document.getElementById('timer-toggle');
     isTimerActive = !isTimerActive;
