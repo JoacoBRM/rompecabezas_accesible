@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Fondo redondeado -->
+  <rect width="32" height="32" rx="7" fill="#eef2ff"/>
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+  <!-- Pieza de rompecabezas: tab derecha, blank abajo -->
+  <path fill="url(#g)"
+    d="M6 6 L26 6 L26 12 A5 5 0 0 1 26 22 L26 26 L20 26 A5 5 0 0 0 12 26 L6 26 Z"/>
+</svg>
