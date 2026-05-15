@@ -31,7 +31,7 @@ const categories = {
     },
     oceano: {
         name: 'Océano',
-        image: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&q=85',
+        image: 'https://images.unsplash.com/photo-1505118380757-91f5f5632de0?ixlib=rb-4.0.3&auto=format&fit=crop&w=700&q=85',
         description: 'Tortuga marina'
     },
     ciudad: {
