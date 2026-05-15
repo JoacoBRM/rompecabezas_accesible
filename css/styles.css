@@ -1,245 +1,199 @@
 :root {
-  --piece-size: 100px;
-  --board-scale: 1;
+    --piece-size: 100px;
+    --board-scale: 1;
 }
 
-/* --- Funcionalidad del Tablero --- */
+/* --- Tablero --- */
 .game-board {
-  display: grid;
-  gap: 0;
-  width: fit-content;
-  margin: 0 auto;
-  border: 4px solid #fff;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
-  background-color: #334155;
-  overflow: hidden;
-  border-radius: 8px;
+    display: grid;
+    gap: 0;
+    width: fit-content;
+    margin: 0 auto;
+    border: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    background-color: #1e293b;
+    overflow: hidden;
+    border-radius: 12px;
 }
 
-/* --- Piezas del Rompecabezas --- */
+/* --- Piezas --- */
 .puzzle-piece {
-  width: var(--piece-size);
-  height: var(--piece-size);
-  background-repeat: no-repeat;
-  cursor: pointer;
-  position: relative;
-  border-radius: 0;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
-  transition: transform 0.2s, filter 0.2s, z-index 0s;
-  box-sizing: border-box;
-  filter: none;
+    width: var(--piece-size);
+    height: var(--piece-size);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    position: relative;
+    border-radius: 0;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+    filter: none;
 }
 
-/* Estados de interacción */
 .puzzle-piece:hover {
-  z-index: 10;
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.9);
+    z-index: 10;
+    transform: scale(1.06);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 0 0 2px rgba(255, 255, 255, 0.7);
+    filter: brightness(1.08);
 }
 
 .puzzle-piece:focus {
-  outline: none;
-  z-index: 20;
-  box-shadow: inset 0 0 0 4px #6366f1;
+    outline: none;
+    z-index: 20;
+    box-shadow: inset 0 0 0 3px #6366f1, 0 0 0 2px rgba(99, 102, 241, 0.4);
 }
 
 .puzzle-piece.selected {
-  z-index: 30;
-  box-shadow: inset 0 0 0 4px #f43f5e, 0 0 15px rgba(0, 0, 0, 0.5);
-  transform: scale(1.02);
-  filter: brightness(1.1);
+    z-index: 30;
+    box-shadow: inset 0 0 0 4px #f43f5e, 0 0 20px rgba(244, 63, 94, 0.5);
+    transform: scale(1.03);
+    filter: brightness(1.12);
 }
 
 .puzzle-piece.correct-position::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  box-shadow: inset 0 0 0 2px #10b981;
-  pointer-events: none;
-  z-index: 5;
-  opacity: 0.6;
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 2px #10b981;
+    pointer-events: none;
+    z-index: 5;
 }
 
-body.cb-protanopia {
-  filter: url(#protanopia);
+/* Animación al intercambiar piezas */
+.puzzle-piece.swapping {
+    animation: swapFlash 0.3s ease-out;
 }
 
-body.cb-deuteranopia {
-  filter: url(#deuteranopia);
+@keyframes swapFlash {
+    0%   { filter: brightness(1.4); transform: scale(1.05); }
+    100% { filter: brightness(1);   transform: scale(1); }
 }
 
-body.cb-tritanopia {
-  filter: url(#tritanopia);
-}
+/* --- Filtros Daltonismo --- */
+body.cb-protanopia    { filter: url(#protanopia); }
+body.cb-deuteranopia  { filter: url(#deuteranopia); }
+body.cb-tritanopia    { filter: url(#tritanopia); }
+body.cb-achromatopsia { filter: url(#achromatopsia); }
 
-body.cb-achromatopsia {
-  filter: url(#achromatopsia);
-}
-
-
-/* --- MODO ALTO CONTRASTE --- */
-
+/* --- ALTO CONTRASTE --- */
 body.high-contrast {
-  background-color: #000000 !important;
-  color: #FFFF00 !important;
+    background-color: #000000 !important;
+    color: #FFFF00 !important;
 }
 
 body.high-contrast *:not(.puzzle-piece) {
-  border-color: #FFFF00 !important;
-  background-color: #000000 !important;
-  color: #FFFF00 !important;
-  box-shadow: none !important;
-  text-shadow: none !important;
-  background-image: none !important;
+    border-color: #FFFF00 !important;
+    background-color: #000000 !important;
+    color: #FFFF00 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background-image: none !important;
 }
 
 body.high-contrast .puzzle-piece {
-  border: 2px solid #FFFF00 !important;
-  filter: contrast(1.5) brightness(1.2);
-  box-shadow: none !important;
+    border: 2px solid #FFFF00 !important;
+    filter: contrast(1.5) brightness(1.2);
+    box-shadow: none !important;
 }
 
 body.high-contrast .puzzle-piece.selected {
-  border: 6px solid #00FFFF !important;
-  transform: scale(1.05);
-  z-index: 50;
+    border: 5px solid #00FFFF !important;
+    transform: scale(1.05);
+    z-index: 50;
 }
 
 body.high-contrast button,
 body.high-contrast select,
 body.high-contrast input {
-  background-color: #000 !important;
-  border: 2px solid #FFFF00 !important;
-  color: #FFFF00 !important;
-  font-weight: bold;
+    background-color: #000 !important;
+    border: 2px solid #FFFF00 !important;
+    color: #FFFF00 !important;
+    font-weight: bold;
 }
 
 body.high-contrast button:hover {
-  background-color: #FFFF00 !important;
-  color: #000 !important;
+    background-color: #FFFF00 !important;
+    color: #000 !important;
 }
 
 body.high-contrast #contrast-toggle {
-  background-color: #000 !important;
-  border: 2px solid #FFFF00 !important;
+    background-color: #000 !important;
+    border: 2px solid #FFFF00 !important;
 }
 
 body.high-contrast #contrast-toggle span[aria-hidden="true"] {
-  background-color: #FFFF00 !important;
-  border: none !important;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-/* --- Animaciones Personalizadas --- */
-@keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
-  }
-
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-
-  100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-}
-
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.2s ease-out forwards;
-}
-
-@keyframes bounceIn {
-  0% {
-    transform: scale(0.3);
-    opacity: 0;
-  }
-
-  50% {
-    transform: scale(1.05);
-  }
-
-  70% {
-    transform: scale(0.9);
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.animate-bounce-in {
-  animation: bounceIn 0.4s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
-}
-
-@keyframes shimmer {
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-.animate-shimmer {
-  animation: shimmer 2s infinite;
-}
-
-/* --- FIX DE CENTRADO DEL MODAL DE VICTORIA --- */
-#win-message {
-  display: none;
-}
-
-#win-message:not(.hidden) {
-  display: flex !important;
+    background-color: #FFFF00 !important;
+    border: none !important;
 }
 
 body.high-contrast #win-message .bg-white {
-  background-color: #000 !important;
-  border: 4px solid #FFFF00 !important;
+    background-color: #000 !important;
+    border: 4px solid #FFFF00 !important;
 }
 
 body.high-contrast #win-message h2,
 body.high-contrast #win-message p,
 body.high-contrast #win-message div {
-  color: #FFFF00 !important;
+    color: #FFFF00 !important;
+}
+
+/* --- Utilidades --- */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* --- Animaciones personalizadas --- */
+@keyframes blob {
+    0%   { transform: translate(0px, 0px) scale(1); }
+    33%  { transform: translate(30px, -50px) scale(1.1); }
+    66%  { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-blob { animation: blob 7s infinite; }
+.animation-delay-2000 { animation-delay: 2s; }
+.animation-delay-4000 { animation-delay: 4s; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
+
+@keyframes bounceIn {
+    0%   { transform: scale(0.3); opacity: 0; }
+    55%  { transform: scale(1.06); }
+    75%  { transform: scale(0.95); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-bounce-in { animation: bounceIn 0.45s cubic-bezier(0.215, 0.610, 0.355, 1.000) both; }
+
+@keyframes shimmer {
+    100% { transform: translateX(100%); }
+}
+
+.animate-shimmer { animation: shimmer 2s infinite; }
+
+/* Modal fix */
+#win-message { display: none; }
+#win-message:not(.hidden) { display: flex !important; }
+
+/* Movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
